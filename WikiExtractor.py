@@ -210,7 +210,7 @@ templateKeys = set(['10', '828'])
 
 ##
 # Regex for identifying disambig pages
-filter_disambig_page_pattern = re.compile("{{[Dd]isambig(uation)?(\|[^}]*)?}}|__DISAMBIG__")
+filter_disambig_page_pattern = re.compile("{{([Dd]isamb(ig(uation)?)?|[Dd]ab)(\|[^}]*)?}}|__DISAMBIG__")
 
 ##
 g_page_total = 0
