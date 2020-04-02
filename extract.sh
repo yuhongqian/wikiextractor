@@ -1,4 +1,8 @@
 #!/bin/bash
+#SBATCH -n 1 # Number of cores
+#SBATCH -N 1 # Ensure that all cores are on one machine
+#SBATCH --mem=8192 # Memory - Use up to 8G
+#SBATCH --time=0 # No time limit
 #
 # NOTES
 #
@@ -9,17 +13,18 @@
 # - Keep tables. They're mostly garbage but can be removed later (remove "^!*").
 # - Remove disambiguation pages. Right now there is no use for them.
 
-INPUT=$1
-PROCESSES=$2
+INPUT="/bos/tmp10/hongqiay/enwiki-20191220-pages-articles-multistream.xml"
+processes=4
 TEMPLATES=$3
-OUTPUT=$4
+OUTPUT="/bos/tmp10/hongqiay/extractorOut"
 
 python WikiExtractor.py $INPUT \
        --json \
        --processes $PROCESSES \
-       --templates $TEMPLATES \
+	   --no-templates
        --output $OUTPUT \
        --bytes 1M \
+	   --filter_disambig_pages=True \
        --compress \
        --links \
        --sections \
