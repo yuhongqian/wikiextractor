@@ -210,7 +210,7 @@ templateKeys = set(['10', '828'])
 
 ##
 # Regex for identifying disambig pages
-filter_disambig_page_pattern = re.compile("{{disambig(uation)?(\|[^}]*)?}}|__DISAMBIG__")
+filter_disambig_page_pattern = re.compile("{{[Dd]isambig(uation)?(\|[^}]*)?}}|__DISAMBIG__")
 
 ##
 g_page_total = 0
@@ -227,7 +227,7 @@ def keepPage(ns, catSet, page):
     if options.filter_disambig_pages:
         for line in page:
             if filter_disambig_page_pattern.match(line):
-                return False
+                return True
     if len(options.filter_category_include) > 0 and len(options.filter_category_include & catSet)==0:
         logging.debug("***No include  " + str(catSet))
         return False
@@ -235,7 +235,7 @@ def keepPage(ns, catSet, page):
         logging.debug("***Exclude  " + str(catSet))
         return False
     g_page_articl_used_total += 1
-    return True
+    return False
 
 
 def get_url(uid):
