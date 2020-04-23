@@ -21,14 +21,14 @@ OUTPUT="/bos/tmp10/hongqiay/extractorOut"
 python WikiExtractor.py $INPUT \
        --json \
        --processes $PROCESSES \
-	   --no-templates
+	     --no-templates
        --output $OUTPUT \
        --bytes 1M \
-	   --filter_disambig_pages=True \
+	     --filter_disambig_pages=False \
+	     --filter_category categories.txt
        --compress \
        --links \
        --sections \
        --lists \
        --keep_tables \
        --min_text_length 0 \
-       --filter_disambig_pages

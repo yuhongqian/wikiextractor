@@ -217,6 +217,15 @@ g_page_total = 0
 g_page_articl_total=0
 g_page_articl_used_total=0
 # page filtering logic -- remove templates, undesired xml namespaces, and disambiguation pages
+
+"""
+HongChien: 
+The priority for filter_category was changed. Instead of what is descirbed on the github page, we do:
+A page will be included iff 
+(1) the including-categories is not empty 
+AND 
+(2) any category of a page exists in including-categories. 
+"""
 def keepPage(ns, catSet, page):
     global g_page_articl_total,g_page_total,g_page_articl_used_total
     g_page_total += 1
@@ -228,12 +237,16 @@ def keepPage(ns, catSet, page):
         for line in page:
             if filter_disambig_page_pattern.match(line):
                 return True
-    if len(options.filter_category_include) > 0 and len(options.filter_category_include & catSet)==0:
-        logging.debug("***No include  " + str(catSet))
-        return False
-    if len(options.filter_category_exclude) > 0 and len(options.filter_category_exclude & catSet)>0:
-        logging.debug("***Exclude  " + str(catSet))
-        return False
+
+    if len(options.filter_category_include) > 0 and len(options.filter_category_include & catSet) > 0:
+        return True
+
+    # if len(options.filter_category_include) > 0 and len(options.filter_category_include & catSet)==0:
+    #     logging.debug("***No include  " + str(catSet))
+    #     return False
+    # if len(options.filter_category_exclude) > 0 and len(options.filter_category_exclude & catSet)>0:
+    #     logging.debug("***Exclude  " + str(catSet))
+    #     return False
     g_page_articl_used_total += 1
     return False
 
@@ -3257,6 +3270,7 @@ def main():
             return
 
     filter_category = args.filter_category
+
     if (filter_category != None and len(filter_category)>0):
         with open(filter_category) as f:
             error_cnt = 0
@@ -3264,7 +3278,7 @@ def main():
                 try:
                     line = str(line.strip())
                     if line.startswith('#') or len(line) == 0:
-                        continue;
+                        continue
                     elif line.startswith('^'):
                         options.filter_category_exclude.add(line.lstrip('^'))
                     else:
